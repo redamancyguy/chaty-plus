@@ -1,0 +1,24 @@
+实例ID:i-2ze87pmz2yvz6fnbgt15
+实例名称:iZ2yvz6fnbgt15Z
+公网IP：123.57.187.79
+内网IP：172.23.76.243
+
+云数据库外网 IP（主机名）
+rm-2ze5en72e3f2ie112ho.mysql.rds.aliyuncs.com
+
+阿里云 账号 boncageltd1
+Password : boncage1003
+
+数据库账号（管理员）
+rds_kunle_20210516
+数据库账号密码
+Boncage1003_!@#*&^
+
+数据库普通账号1
+wxy_first_001
+数据库普通账号1密码
+wxy0412_001001001
+
+数据库名称
+db_kunle_20210516
+授权账号 为普通用户选择列表

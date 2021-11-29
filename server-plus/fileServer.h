@@ -101,6 +101,9 @@ void dealFile(int client) {
 }
 
 void fileServer() {
+    if(access("file",R_OK)!=0){
+        mkdir("file", 0755);
+    }
     int serverFD;
     struct sockaddr_in sockAddress;
     socklen_t addressLen = sizeof(struct sockaddr_in);

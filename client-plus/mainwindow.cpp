@@ -35,6 +35,7 @@ void MainWindow::Getting(){
         }
        case NEW_GROUP:{
             GroupPackage *package = (GroupPackage *)(dataBuf.data);
+            qDebug()<<package->groupId;
             this->ui->listWidget->addItem(QString::number(package->groupId));
             break;
         }
@@ -47,12 +48,29 @@ void MainWindow::Getting(){
             ui->textBrowser->setTextCursor(cursor);
             break;
         }
-        case DELETE_GROUP:
+        case DELETE_GROUP:{
+            GroupPackage *package = (GroupPackage *)(dataBuf.data);
+            auto ls = this->ui->listWidget->findItems(QString::number(package->groupId),Qt::MatchStartsWith);
+            this->ui->listWidget->takeItem(this->ui->listWidget->currentIndex().row());
+            for(auto i:ls){
+                this->ui->listWidget->takeItem(this->ui->listWidget->row(i));
+            }
             break;
-        case JOIN_GROUP:
+        }
+        case JOIN_GROUP:{
+            GroupPackage *package = (GroupPackage *)(dataBuf.data);
+            this->ui->listWidget->addItem(QString::number(package->groupId));
             break;
-        case DETACH_GROUP:
+        }
+        case DETACH_GROUP: {
+            GroupPackage *package = (GroupPackage *)(dataBuf.data);
+            auto ls = this->ui->listWidget->findItems(QString::number(package->groupId),Qt::MatchStartsWith);
+            this->ui->listWidget->takeItem(this->ui->listWidget->currentIndex().row());
+            for(auto i:ls){
+                this->ui->listWidget->takeItem(this->ui->listWidget->row(i));
+            }
             break;
+        }
         case UNKNOWN:
             break;
         }
@@ -61,7 +79,7 @@ void MainWindow::Getting(){
 MainWindow::~MainWindow()
 {
     this->TouchingThread->detach();
-        delete this->TouchingThread;
+    delete this->TouchingThread;
     this->GettingThread->detach();
     delete this->GettingThread;
     delete ui;
@@ -86,26 +104,45 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::on_pushButton_2_clicked()
 {
     for(auto i:this->ui->listWidget->selectedItems()){
-        this->ui->listWidget->takeItem(this->ui->listWidget->currentIndex().row());
         this->data.DeleteGroup(i->text().toULongLong());
     }
 }
+
+void MainWindow::on_pushButton_3_clicked()
+{
+    unsigned long long groupId = this->ui->lineEdit_2->text().toULongLong();
+    this->data.JoinGroup(groupId);
+}
+
+
+void MainWindow::on_pushButton_4_clicked()
+{
+    for(auto i:this->ui->listWidget->selectedItems()){
+        this->data.DetachGroup(i->text().toULongLong());
+    }
+}
+
 
 struct fileInfo {
     bool flag;
     long long size;
     char fileName[128];
 };
+const char *fileServerIp = "0.0.0.0";
+unsigned short fileServerPort = 19999;
 void MainWindow::on_pushButton_5_clicked()
 {
     QString filePath = QFileDialog::getOpenFileName();
+    if(filePath == ""){
+        return;
+    }
     QFile file(filePath);
     file.open(QIODevice::ReadOnly);
     QList<QString> list = filePath.split("/");
 
 
     for(auto i:this->ui->listWidget->selectedItems()){
-        this->data.Chat(i->text().toULongLong(),"File : "+list[list.size() - 1]);
+        this->data.Chat(i->text().toULongLong(),"File Post: "+list[list.size() - 1]);
     }
 
 
@@ -116,7 +153,7 @@ void MainWindow::on_pushButton_5_clicked()
     info.flag = true;
     info.size = file.size();
 
-    tcp.connectToHost("0.0.0.0",9999);
+    tcp.connectToHost(fileServerIp,fileServerPort);
 
     if(!tcp.waitForConnected(30000))
     {
@@ -132,12 +169,10 @@ void MainWindow::on_pushButton_5_clicked()
         if(temp < 0){
             break;
         }
-        qDebug()<<temp;
         tcp.write(buf,temp);
         tcp.waitForBytesWritten(300000);
         i+=temp;
     }
-    qDebug()<<i;
     QThread::msleep(1000);
     tcp.disconnectFromHost();
     file.close();
@@ -147,32 +182,42 @@ void MainWindow::on_pushButton_5_clicked()
 void MainWindow::on_pushButton_6_clicked()
 {
     QString filePath = QFileDialog::getExistingDirectory();
+    if(filePath == ""){
+        return;
+    }
+    if(this->ui->lineEdit->text() == ""){
+        return;
+    }
+    for(auto i:this->ui->listWidget->selectedItems()){
+        this->data.Chat(i->text().toULongLong(),"File Post: "+this->ui->lineEdit->text());
+    }
     QFile file(filePath+"/"+this->ui->lineEdit->text());
     file.open(QIODevice::WriteOnly);
     fileInfo info;
     strcpy(info.fileName,this->ui->lineEdit->text().toStdString().c_str());
     QTcpSocket tcp;
     info.flag = false;
-//    info.size = file.size();
 
-    tcp.connectToHost("0.0.0.0",9999);
+    tcp.connectToHost(fileServerIp,fileServerPort);
 
     if(!tcp.waitForConnected(30000))
     {
         QMessageBox::information(this, "QT网络通信", "连接服务端失败！");
         return;
     }
+
+
     tcp.write((char*)&info,sizeof(fileInfo));
     tcp.waitForBytesWritten(300000);
     tcp.flush();
 
-    tcp.read((char*)&info,sizeof(fileInfo));//????????????????????
-    tcp.waitForReadyRead(300000);
-
-
-    qDebug()<<tcp.read((char*)&info,sizeof(fileInfo));
-    tcp.waitForReadyRead(300000);
-     qDebug()<<info.size;
+    for(int i=0;i<10;i++){
+        long long temp = tcp.read((char*)&info,sizeof(fileInfo));
+        tcp.waitForReadyRead(300000);
+        if(temp > 0){
+            break;
+        }
+    }
     long long i=0;
     while(i<info.size){
         char buf[BufSize];
@@ -187,4 +232,5 @@ void MainWindow::on_pushButton_6_clicked()
     tcp.disconnectFromHost();
     file.close();
 }
+
 

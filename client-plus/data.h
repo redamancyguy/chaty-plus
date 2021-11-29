@@ -24,7 +24,7 @@ public:
     ~Data();
 private:
     const char *ipAddress = "0.0.0.0";
-    const unsigned short port = 9999;
+    const unsigned short port = 19999;
     std::mutex ReceiveMessageMutex;
     std::queue<Package> ReceiveMessageQueue;
     std::mutex SendMessageMutex;

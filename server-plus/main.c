@@ -15,7 +15,7 @@
 #include "Clients.h"
 #include "Groups.h"
 
-const unsigned short serverPort = 9999;
+const unsigned short serverPort = 19999;
 const int threadNumber = 10;
 int serverFileDescriptor;
 Clients *clients;
@@ -34,17 +34,24 @@ _Noreturn void *Handle(BufferQueue *queue) {
             }
             for (int i = 0; i < length; i++) {
                 Message message = messages[i];
+                printf("%hhu.", *(char *) (&message.address.sin_addr.s_addr));
+                printf("%hhu.", *((char *) (&message.address.sin_addr.s_addr) + 1));
+                printf("%hhu.", *((char *) (&message.address.sin_addr.s_addr) + 2));
+                printf("%hhu:", *((char *) (&message.address.sin_addr.s_addr) + 3));
+                printf("%d\t", message.address.sin_port);
                 switch (message.data.code) {
                     case TOUCH: {
                         Client *client;
                         if (ClientsGet(clients, message.address, &client)) {
                             client->time = time(NULL);
+                            puts("Touch ok !");
                         } else {
                             client = ClientNew();
                             ClientsInsert(clients, message.address, client);
                             message.data.code = ERROR;
                             client->address = message.address;
                             client->length = message.length;
+                            puts("Touch error !");
                         }
                         break;
                     }
@@ -56,8 +63,10 @@ _Noreturn void *Handle(BufferQueue *queue) {
                             GroupsInsert(groups, group, group);
                             ArrayPushBack(group->array, client);
                             HashInsert(client->group, group, group);
+                            puts("New group ok !");
                         } else {
                             message.data.code = ERROR;
+                            puts("New group error !");
                         }
                         break;
                     }
@@ -71,10 +80,13 @@ _Noreturn void *Handle(BufferQueue *queue) {
                                     HashErase(((Client *) ArrayGet(group->array, ii))->group, group);
                                 }
                                 GroupDestroy(group);
+                                puts("Delete group ok !");
                             } else {
+                                puts("Delete group error !");
                                 message.data.code = ERROR;
                             }
                         } else {
+                            puts("Delete group error !");
                             message.data.code = ERROR;
                         }
                         break;
@@ -89,10 +101,13 @@ _Noreturn void *Handle(BufferQueue *queue) {
                                 GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
                                 ArrayPushBack(group->array, client);
                                 HashInsert(client->group, group, group);
+                                puts("Join group ok !");
                             } else {
+                                puts("Join group error !");
                                 message.data.code = ERROR;
                             }
                         } else {
+                            puts("Join group error !");
                             message.data.code = ERROR;
                         }
                         break;
@@ -107,10 +122,13 @@ _Noreturn void *Handle(BufferQueue *queue) {
                                 GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
                                 ArrayDelete(group->array, client);
                                 HashErase(client->group, group);
+                                puts("Detach group ok !");
                             } else {
+                                puts("Detach group error !");
                                 message.data.code = ERROR;
                             }
                         } else {
+                            puts("Detach group error !");
                             message.data.code = ERROR;
                         }
                         break;
@@ -126,11 +144,14 @@ _Noreturn void *Handle(BufferQueue *queue) {
                                            (struct sockaddr *) &((Client *) ArrayGet(group->array, ii))->address,
                                            ((Client *) ArrayGet(group->array, ii))->length);
                                 }
+                                puts("Chat ok !");
                                 continue;
                             } else {
+                                puts("Chat error !");
                                 message.data.code = ERROR;
                             }
                         } else {
+                            puts("Chat error !");
                             message.data.code = ERROR;
                         }
                         break;

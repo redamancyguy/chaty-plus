@@ -17,7 +17,7 @@ struct fileInfo {
     long long size;
     char fileName[128];
 };
-extern const unsigned short serverPort;
+
 #define bufSize 16384
 void dealFile(int client) {
     struct fileInfo info;
@@ -30,7 +30,7 @@ void dealFile(int client) {
     long long i = 0;
     FILE *fp;
     if (info.flag) {
-        printf("Post : %s %lld\n",info.fileName,info.size);
+        printf("Post : %s %lld",info.fileName,info.size);
         char fileName[164];
         sprintf(fileName,"file/%s",info.fileName);
         if ((fp = fopen(fileName, "w")) == NULL) {
@@ -72,7 +72,7 @@ void dealFile(int client) {
         fseek(fp, 0, SEEK_END);
         info.size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
-        printf("Get : %s %lld\n",info.fileName,info.size);
+        printf("Get : %s %lld",info.fileName,info.size);
         if (write(client, (void *) &info, sizeof(struct fileInfo)) < 0) {
             perror("return file info error");
         }
@@ -132,7 +132,7 @@ void fileServer() {
             continue;
         }
         pthread_t thread;
-        pthread_create(&thread, NULL, (void *(*)(void *)) dealFile, (void*)(clientFD));
+        pthread_create(&thread, NULL, (void *(*)(void *)) dealFile, (void*)(long long)(clientFD));
         pthread_detach(thread);
     }
 }

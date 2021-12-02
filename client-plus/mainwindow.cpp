@@ -24,7 +24,7 @@ void MainWindow::Getting(){
     while (true) {
         Package dataBuf;
         this->data.GetMessage(&dataBuf);
-        switch (dataBuf.code) {
+        switch (dataBuf.code){
         case TOUCH:{
             qDebug()<<"TOUCHING";
             break;
@@ -139,20 +139,14 @@ void MainWindow::on_pushButton_5_clicked()
     QFile file(filePath);
     file.open(QIODevice::ReadOnly);
     QList<QString> list = filePath.split("/");
-
-
     for(auto i:this->ui->listWidget->selectedItems()){
         this->data.Chat(i->text().toULongLong(),"File Post: "+list[list.size() - 1]);
     }
-
-
-
     fileInfo info;
-    strcpy(info.fileName,list[list.size() - 1].toStdString().c_str());
+    strncpy(info.fileName,list[list.size() - 1].toStdString().c_str(),128);
     QTcpSocket tcp;
     info.flag = true;
     info.size = file.size();
-
     tcp.connectToHost(fileServerIp,fileServerPort);
 
     if(!tcp.waitForConnected(30000))
@@ -189,28 +183,23 @@ void MainWindow::on_pushButton_6_clicked()
         return;
     }
     for(auto i:this->ui->listWidget->selectedItems()){
-        this->data.Chat(i->text().toULongLong(),"File Post: "+this->ui->lineEdit->text());
+        this->data.Chat(i->text().toULongLong(),"File Get: "+this->ui->lineEdit->text());
     }
     QFile file(filePath+"/"+this->ui->lineEdit->text());
     file.open(QIODevice::WriteOnly);
     fileInfo info;
-    strcpy(info.fileName,this->ui->lineEdit->text().toStdString().c_str());
+    strncpy(info.fileName,this->ui->lineEdit->text().toStdString().c_str(),128);
     QTcpSocket tcp;
     info.flag = false;
-
     tcp.connectToHost(fileServerIp,fileServerPort);
-
     if(!tcp.waitForConnected(30000))
     {
         QMessageBox::information(this, "QT网络通信", "连接服务端失败！");
         return;
     }
-
-
     tcp.write((char*)&info,sizeof(fileInfo));
     tcp.waitForBytesWritten(300000);
     tcp.flush();
-
     for(int i=0;i<10;i++){
         long long temp = tcp.read((char*)&info,sizeof(fileInfo));
         tcp.waitForReadyRead(300000);

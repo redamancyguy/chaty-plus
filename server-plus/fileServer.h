@@ -25,18 +25,23 @@ void dealFile(int client) {
         info.flag = false;
         if (write(client, (void *) &info, sizeof(struct fileInfo)) < 0) {
             perror("return false error");
+            close(client);
+            return;
         }
     }
     long long i = 0;
     FILE *fp;
     if (info.flag) {
-        printf("Post : %s %lld",info.fileName,info.size);
+        printf("Post : %s %lld\t",info.fileName,info.size);
         char fileName[164];
         sprintf(fileName,"file/%s",info.fileName);
         if ((fp = fopen(fileName, "w")) == NULL) {
             info.flag = false;
             if (write(client, (void *) &info, sizeof(struct fileInfo)) < 0) {
                 perror("return false error");
+                fclose(fp);
+                close(client);
+                return;
             }
             perror("Get info error");
             close(client);
@@ -64,6 +69,9 @@ void dealFile(int client) {
             info.flag = false;
             if (write(client, (void *) &info, sizeof(struct fileInfo)) < 0) {
                 perror("return false error");
+                fclose(fp);
+                close(client);
+                return;
             }
             perror("Get info error");
             close(client);
@@ -72,9 +80,12 @@ void dealFile(int client) {
         fseek(fp, 0, SEEK_END);
         info.size = ftell(fp);
         fseek(fp, 0, SEEK_SET);
-        printf("Get : %s %lld",info.fileName,info.size);
+        printf("Get : %s %lld\t",info.fileName,info.size);
         if (write(client, (void *) &info, sizeof(struct fileInfo)) < 0) {
             perror("return file info error");
+            fclose(fp);
+            close(client);
+            return;
         }
         while (i < info.size) {
             char buf[bufSize] = {0};

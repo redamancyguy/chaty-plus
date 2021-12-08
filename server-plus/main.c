@@ -96,8 +96,7 @@ _Noreturn void *Handle(BufferQueue *queue) {
                         if (ClientsGet(clients, message.address, &client)) {
                             Group *group;
                             if (!HashGet(client->group, (void *) ((GroupPackage *) (message.data.data))->groupId,
-                                         (void **) &group)
-                                &&
+                                         (void **) &group) &&
                                 GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
                                 ArrayPushBack(group->array, client);
                                 HashInsert(client->group, group, group);

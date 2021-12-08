@@ -17,7 +17,6 @@ typedef struct {
 }Client;
 
 typedef struct {
-    long long size;
     Hash *hash[65536];
 }Clients;
 

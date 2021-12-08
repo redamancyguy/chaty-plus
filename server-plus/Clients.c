@@ -21,7 +21,6 @@ Clients *ClientsNew(){
     for(int i=0;i<65536;i++){
         clients->hash[i] = HashNew(1024);
     }
-    clients->size = 0;
     return clients;
 }
 

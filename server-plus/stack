@@ -1,0 +1,167 @@
+#include <stdio.h>
+#include <stdbool.h>
+#include <stdlib.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <sys/stat.h>
+#include <string.h>
+#include <unistd.h>
+#include <time.h>
+#include <pthread.h>
+#include "BufferQueue.h"
+#include "Utils/Array.h"
+
+#include "Client.h"
+
+const unsigned short serverPort = 19999;
+const int threadNumber = 10;
+int serverFileDescriptor;
+
+Clients *clients[65536];
+
+
+_Noreturn void *Handle(BufferQueue *queue) {
+    unsigned int HandleBufSize = 64;
+    unsigned sleepPace = 1024;
+    while (true) {
+        if (!BufferQueueIsEmpty(queue)) {
+            Message messages[HandleBufSize];
+            int length = 0;
+            for (int i = 0; i < HandleBufSize && !BufferQueueIsEmpty(queue); i++) {
+                messages[length++] = *Front(queue);
+                BufferQueuePop(queue);
+            }
+            for (int i = 0; i < length; i++) {
+                Message message = messages[i];
+                printf("%hhu.", *(char *) (&message.address.sin_addr.s_addr));
+                printf("%hhu.", *((char *) (&message.address.sin_addr.s_addr) + 1));
+                printf("%hhu.", *((char *) (&message.address.sin_addr.s_addr) + 2));
+                printf("%hhu:", *((char *) (&message.address.sin_addr.s_addr) + 3));
+                printf("%d\t", message.address.sin_port);
+                switch (message.data.code) {
+                    case TOUCH: {
+                        unsigned short low = (unsigned short)message.data.id;
+                        size_t id = message.data.id>>16;
+                        Clients *clientsT = clients[low];
+                        if(IsValid(clientsT,id)){
+                            if(IsOnline(clientsT,id)){
+                                printf("%u %lu Touch Online !\n",low,id);
+                            }else{
+                                printf("%u %lu Touch Offline !\n",low,id);
+                                Client *client = GetClient(clientsT,message.data.id);
+                                client->address = message.address;
+                                client->length = message.length;
+                                client->time = time(NULL);
+                                client->Online = true;
+                            }
+                        }else{
+                            puts("Invalid Id !");
+                            message.data.id = GetAvailableId(clients[message.address.sin_port]);
+                            printf("New Id : %lu\n",message.data.id);
+                            message.data.id = GetAvailableId(clients[message.address.sin_port]);
+                            printf("New Id : %lu\n",message.data.id);
+
+                        }
+                        break;
+                    }
+                    case NEW_GROUP:
+                        break;
+                    case DELETE_GROUP:
+                        break;
+                    case JOIN_GROUP:
+                        break;
+                    case DETACH_GROUP:
+                        break;
+                    case ERROR:
+                        break;
+                    case CHAT:
+                        break;
+                    case UNKNOWN:
+                        break;
+                    default:{
+                        break;
+                    }
+                }
+                sendto(serverFileDescriptor, &message.data, sizeof(Package), 0,
+                       (struct sockaddr *) &message.address, message.length);
+            }
+        } else {
+            usleep(sleepPace);
+        }
+    }
+}
+
+_Noreturn void *GetMessage(BufferQueue *queue) {
+    while (true) {
+        Message *buffer = End(queue);
+        long long count = recvfrom(serverFileDescriptor, &buffer->data, sizeof(Package) + 1024,
+                                   0, (struct sockaddr *) &buffer->address, &buffer->length);
+        puts("RECV");
+        switch (count) {
+            case -1: {
+                perror("package size < 0");
+                break;
+            }
+            case sizeof(Package): {
+                while (BufferQueueIsFull(queue)) {
+                    usleep(256);
+                }
+                BufferQueuePush(queue);
+                break;
+            }
+            default: {
+                perror("package size error");
+            }
+        }
+    }
+}
+
+#include "fileServer.h"
+
+int main() {
+    pthread_t fileThread;
+    if (pthread_create(&fileThread, NULL, (void *(*)(void *)) fileServer, NULL) != 0) {
+        exit(55);
+    }
+    serverFileDescriptor = socket(AF_INET, SOCK_DGRAM, 0);
+    if (serverFileDescriptor < 0) {
+        exit(1);
+    }
+    struct sockaddr_in serverAddress;
+    serverAddress.sin_family = AF_INET;
+    serverAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+    serverAddress.sin_port = htons(serverPort);
+    if (bind(serverFileDescriptor, (struct sockaddr *) &serverAddress, sizeof(serverAddress)) < 0) {
+        close(serverFileDescriptor);
+        exit(2);
+    }
+    for(int i=0;i<65536;i++){
+        clients[i] = AllClientsNew();
+    }
+    BufferQueue *queues[threadNumber];
+    for (int i = 0; i < threadNumber; i++) {
+        queues[i] = BufferQueueNew();
+    }
+    pthread_t GetThreads[threadNumber];
+    for (int i = 0; i < threadNumber; i++) {
+        pthread_create(&GetThreads[i], NULL, (void *_Nullable (*_Nonnull)(void *_Nullable)) GetMessage, queues[i]);
+    }
+    pthread_t HandleThreads[threadNumber];
+    for (int i = 0; i < threadNumber; i++) {
+        pthread_create(&HandleThreads[i], NULL, (void *_Nullable (*_Nonnull)(void *_Nullable)) Handle, queues[i]);
+    }
+    getchar();
+    getchar();
+    for (int i = 0; i < threadNumber; i++) {
+        pthread_detach(GetThreads[i]);
+    }
+    for (int i = 0; i < threadNumber; i++) {
+        pthread_detach(HandleThreads[i]);
+    }
+
+    for (int i = 0; i < threadNumber; i++) {
+        BufferQueueDestroy(queues[i]);
+    }
+    return 0;
+}
+

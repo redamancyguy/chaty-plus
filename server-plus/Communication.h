@@ -15,10 +15,12 @@ enum Code {
     DETACH_GROUP,
     ERROR,
     TOUCH,
+    ID,
     CHAT,
     UNKNOWN,
 };
 typedef struct {
+    size_t id;
     enum Code code;
     char data[2048];
 } Package;

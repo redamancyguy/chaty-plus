@@ -36,9 +36,7 @@ private:
 
     void keyPressEvent(QKeyEvent* event);
 
-
-
     void Touching();
-      void Getting();
+    void Getting();
 };
 #endif // MAINWINDOW_H

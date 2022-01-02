@@ -9,10 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_C
   "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/BufferQueue.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/BufferQueue.c.o"
-  "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/Clients.c.o"
-  "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/Groups.c.o"
-  "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/Utils/Array.c.o"
-  "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/Utils/Hash.c.o"
+  "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/Utils/Tree.c.o"
   "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/main.c" "/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles/server_plus.dir/main.c.o"
   )
 set(CMAKE_C_COMPILER_ID "AppleClang")

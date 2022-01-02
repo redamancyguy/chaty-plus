@@ -92,79 +92,34 @@ CMakeFiles/server_plus.dir/BufferQueue.c.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/BufferQueue.c.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/BufferQueue.c -o CMakeFiles/server_plus.dir/BufferQueue.c.s
 
-CMakeFiles/server_plus.dir/Utils/Hash.c.o: CMakeFiles/server_plus.dir/flags.make
-CMakeFiles/server_plus.dir/Utils/Hash.c.o: ../Utils/Hash.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/server_plus.dir/Utils/Hash.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/server_plus.dir/Utils/Hash.c.o -c /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.c
+CMakeFiles/server_plus.dir/Utils/Tree.c.o: CMakeFiles/server_plus.dir/flags.make
+CMakeFiles/server_plus.dir/Utils/Tree.c.o: ../Utils/Tree.c
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building C object CMakeFiles/server_plus.dir/Utils/Tree.c.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/server_plus.dir/Utils/Tree.c.o -c /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.c
 
-CMakeFiles/server_plus.dir/Utils/Hash.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/server_plus.dir/Utils/Hash.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.c > CMakeFiles/server_plus.dir/Utils/Hash.c.i
+CMakeFiles/server_plus.dir/Utils/Tree.c.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/server_plus.dir/Utils/Tree.c.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.c > CMakeFiles/server_plus.dir/Utils/Tree.c.i
 
-CMakeFiles/server_plus.dir/Utils/Hash.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/Utils/Hash.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.c -o CMakeFiles/server_plus.dir/Utils/Hash.c.s
-
-CMakeFiles/server_plus.dir/Utils/Array.c.o: CMakeFiles/server_plus.dir/flags.make
-CMakeFiles/server_plus.dir/Utils/Array.c.o: ../Utils/Array.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building C object CMakeFiles/server_plus.dir/Utils/Array.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/server_plus.dir/Utils/Array.c.o -c /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.c
-
-CMakeFiles/server_plus.dir/Utils/Array.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/server_plus.dir/Utils/Array.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.c > CMakeFiles/server_plus.dir/Utils/Array.c.i
-
-CMakeFiles/server_plus.dir/Utils/Array.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/Utils/Array.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.c -o CMakeFiles/server_plus.dir/Utils/Array.c.s
-
-CMakeFiles/server_plus.dir/Clients.c.o: CMakeFiles/server_plus.dir/flags.make
-CMakeFiles/server_plus.dir/Clients.c.o: ../Clients.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building C object CMakeFiles/server_plus.dir/Clients.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/server_plus.dir/Clients.c.o -c /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.c
-
-CMakeFiles/server_plus.dir/Clients.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/server_plus.dir/Clients.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.c > CMakeFiles/server_plus.dir/Clients.c.i
-
-CMakeFiles/server_plus.dir/Clients.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/Clients.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.c -o CMakeFiles/server_plus.dir/Clients.c.s
-
-CMakeFiles/server_plus.dir/Groups.c.o: CMakeFiles/server_plus.dir/flags.make
-CMakeFiles/server_plus.dir/Groups.c.o: ../Groups.c
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building C object CMakeFiles/server_plus.dir/Groups.c.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -o CMakeFiles/server_plus.dir/Groups.c.o -c /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.c
-
-CMakeFiles/server_plus.dir/Groups.c.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing C source to CMakeFiles/server_plus.dir/Groups.c.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -E /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.c > CMakeFiles/server_plus.dir/Groups.c.i
-
-CMakeFiles/server_plus.dir/Groups.c.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/Groups.c.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.c -o CMakeFiles/server_plus.dir/Groups.c.s
+CMakeFiles/server_plus.dir/Utils/Tree.c.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling C source to assembly CMakeFiles/server_plus.dir/Utils/Tree.c.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/cc $(C_DEFINES) $(C_INCLUDES) $(C_FLAGS) -S /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.c -o CMakeFiles/server_plus.dir/Utils/Tree.c.s
 
 # Object files for target server_plus
 server_plus_OBJECTS = \
 "CMakeFiles/server_plus.dir/main.c.o" \
 "CMakeFiles/server_plus.dir/BufferQueue.c.o" \
-"CMakeFiles/server_plus.dir/Utils/Hash.c.o" \
-"CMakeFiles/server_plus.dir/Utils/Array.c.o" \
-"CMakeFiles/server_plus.dir/Clients.c.o" \
-"CMakeFiles/server_plus.dir/Groups.c.o"
+"CMakeFiles/server_plus.dir/Utils/Tree.c.o"
 
 # External object files for target server_plus
 server_plus_EXTERNAL_OBJECTS =
 
 server_plus: CMakeFiles/server_plus.dir/main.c.o
 server_plus: CMakeFiles/server_plus.dir/BufferQueue.c.o
-server_plus: CMakeFiles/server_plus.dir/Utils/Hash.c.o
-server_plus: CMakeFiles/server_plus.dir/Utils/Array.c.o
-server_plus: CMakeFiles/server_plus.dir/Clients.c.o
-server_plus: CMakeFiles/server_plus.dir/Groups.c.o
+server_plus: CMakeFiles/server_plus.dir/Utils/Tree.c.o
 server_plus: CMakeFiles/server_plus.dir/build.make
 server_plus: CMakeFiles/server_plus.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking C executable server_plus"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Linking C executable server_plus"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/server_plus.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -8,6 +8,7 @@
 #include <netinet/in.h>
 
 
+
 enum Code {
     NEW_GROUP,
     DELETE_GROUP,
@@ -15,10 +16,12 @@ enum Code {
     DETACH_GROUP,
     ERROR,
     TOUCH,
+    ID,
     CHAT,
     UNKNOWN,
 };
 typedef struct {
+    size_t id;
     enum Code code;
     char data[2048];
 } Package;
@@ -35,6 +38,5 @@ typedef struct {
 
 struct TouchPackage {
 };
-
 
 #endif //COMMUNICATION_H

@@ -5,27 +5,15 @@ CMakeFiles/server_plus.dir/BufferQueue.c.o: \
  ../BufferQueue.c \
  ../BufferQueue.h \
  ../Communication.h
-CMakeFiles/server_plus.dir/Clients.c.o: \
- ../Clients.c \
- ../Clients.h \
- ../Utils/Hash.h
-CMakeFiles/server_plus.dir/Groups.c.o: \
- ../Groups.c \
- ../Groups.h \
+CMakeFiles/server_plus.dir/Utils/Tree.c.o: \
  ../Utils/Array.h \
- ../Utils/Hash.h
-CMakeFiles/server_plus.dir/Utils/Array.c.o: \
- ../Utils/Array.c \
- ../Utils/Array.h
-CMakeFiles/server_plus.dir/Utils/Hash.c.o: \
- ../Utils/Hash.c \
- ../Utils/Hash.h
+ ../Utils/Tree.c \
+ ../Utils/Tree.h
 CMakeFiles/server_plus.dir/main.c.o: \
  ../BufferQueue.h \
- ../Clients.h \
+ ../Client.h \
  ../Communication.h \
- ../Groups.h \
  ../Utils/Array.h \
- ../Utils/Hash.h \
+ ../Utils/Tree.h \
  ../fileServer.h \
  ../main.c

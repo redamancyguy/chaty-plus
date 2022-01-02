@@ -153,101 +153,29 @@ BufferQueue.c.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/BufferQueue.c.s
 .PHONY : BufferQueue.c.s
 
-Clients.o: Clients.c.o
-.PHONY : Clients.o
+Utils/Tree.o: Utils/Tree.c.o
+.PHONY : Utils/Tree.o
 
 # target to build an object file
-Clients.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Clients.c.o
-.PHONY : Clients.c.o
+Utils/Tree.c.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Tree.c.o
+.PHONY : Utils/Tree.c.o
 
-Clients.i: Clients.c.i
-.PHONY : Clients.i
-
-# target to preprocess a source file
-Clients.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Clients.c.i
-.PHONY : Clients.c.i
-
-Clients.s: Clients.c.s
-.PHONY : Clients.s
-
-# target to generate assembly for a file
-Clients.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Clients.c.s
-.PHONY : Clients.c.s
-
-Groups.o: Groups.c.o
-.PHONY : Groups.o
-
-# target to build an object file
-Groups.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Groups.c.o
-.PHONY : Groups.c.o
-
-Groups.i: Groups.c.i
-.PHONY : Groups.i
+Utils/Tree.i: Utils/Tree.c.i
+.PHONY : Utils/Tree.i
 
 # target to preprocess a source file
-Groups.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Groups.c.i
-.PHONY : Groups.c.i
+Utils/Tree.c.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Tree.c.i
+.PHONY : Utils/Tree.c.i
 
-Groups.s: Groups.c.s
-.PHONY : Groups.s
-
-# target to generate assembly for a file
-Groups.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Groups.c.s
-.PHONY : Groups.c.s
-
-Utils/Array.o: Utils/Array.c.o
-.PHONY : Utils/Array.o
-
-# target to build an object file
-Utils/Array.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Array.c.o
-.PHONY : Utils/Array.c.o
-
-Utils/Array.i: Utils/Array.c.i
-.PHONY : Utils/Array.i
-
-# target to preprocess a source file
-Utils/Array.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Array.c.i
-.PHONY : Utils/Array.c.i
-
-Utils/Array.s: Utils/Array.c.s
-.PHONY : Utils/Array.s
+Utils/Tree.s: Utils/Tree.c.s
+.PHONY : Utils/Tree.s
 
 # target to generate assembly for a file
-Utils/Array.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Array.c.s
-.PHONY : Utils/Array.c.s
-
-Utils/Hash.o: Utils/Hash.c.o
-.PHONY : Utils/Hash.o
-
-# target to build an object file
-Utils/Hash.c.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Hash.c.o
-.PHONY : Utils/Hash.c.o
-
-Utils/Hash.i: Utils/Hash.c.i
-.PHONY : Utils/Hash.i
-
-# target to preprocess a source file
-Utils/Hash.c.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Hash.c.i
-.PHONY : Utils/Hash.c.i
-
-Utils/Hash.s: Utils/Hash.c.s
-.PHONY : Utils/Hash.s
-
-# target to generate assembly for a file
-Utils/Hash.c.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Hash.c.s
-.PHONY : Utils/Hash.c.s
+Utils/Tree.c.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/server_plus.dir/build.make CMakeFiles/server_plus.dir/Utils/Tree.c.s
+.PHONY : Utils/Tree.c.s
 
 main.o: main.c.o
 .PHONY : main.o
@@ -285,18 +213,9 @@ help:
 	@echo "... BufferQueue.o"
 	@echo "... BufferQueue.i"
 	@echo "... BufferQueue.s"
-	@echo "... Clients.o"
-	@echo "... Clients.i"
-	@echo "... Clients.s"
-	@echo "... Groups.o"
-	@echo "... Groups.i"
-	@echo "... Groups.s"
-	@echo "... Utils/Array.o"
-	@echo "... Utils/Array.i"
-	@echo "... Utils/Array.s"
-	@echo "... Utils/Hash.o"
-	@echo "... Utils/Hash.i"
-	@echo "... Utils/Hash.s"
+	@echo "... Utils/Tree.o"
+	@echo "... Utils/Tree.i"
+	@echo "... Utils/Tree.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

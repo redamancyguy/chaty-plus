@@ -16,23 +16,17 @@ netinet/in.h
 stdbool.h
 -
 
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.h
+/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Client.h
+Utils/Tree.h
+/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.h
 stdbool.h
 -
-netinet/in.h
+pthread.h
 -
-Utils/Hash.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.h
 
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Communication.h
 netinet/in.h
 -
-
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.h
-Utils/Array.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.h
-Utils/Hash.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.h
 
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.h
 stdbool.h
@@ -42,11 +36,11 @@ stdlib.h
 pthread.h
 -
 
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.h
-pthread.h
--
+/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.h
 stdbool.h
 -
+Array.h
+/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.h
 
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/fileServer.h
 pthread.h
@@ -89,14 +83,10 @@ pthread.h
 -
 BufferQueue.h
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/BufferQueue.h
-Utils/Hash.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.h
 Utils/Array.h
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.h
-Clients.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.h
-Groups.h
-/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.h
+Client.h
+/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Client.h
 fileServer.h
 /Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/fileServer.h
 

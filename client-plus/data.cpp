@@ -7,15 +7,32 @@
 
 #include <QUdpSocket>
 
-void Data::Receive(){
-    QHostAddress serverAddr;
-    quint16 port;
+void Data::Core(){
+    QHostAddress serverAddress = QHostAddress(this->ipAddress);
+    quint16 serverPort = this->port;
     QUdpSocket socket;
-    socket.bind(serverAddr, 0,QUdpSocket::ShareAddress);
+    QHostAddress clientAddress;
+
+    socket.bind(clientAddress, 0,QUdpSocket::ShareAddress);
     socket.open(QIODevice::ReadWrite);
+
+    Package dataBuf;
+    QHostAddress tempAddress;
+    quint16 tempPort;
+    dataBuf.code =  TOUCH;
+    dataBuf.id = 32131232131232;
+    socket.writeDatagram((char*)&dataBuf,sizeof(Package),serverAddress,serverPort);
+    socket.waitForBytesWritten();
+    for(int i=0;i<5&&socket.readDatagram((char*)&dataBuf, sizeof(Package),&tempAddress, &tempPort) <= 0;i++){
+        QThread::sleep(1);
+        if(i==5){
+            //ERROR
+        }
+    }
+    qDebug()<<"temp ID"<<dataBuf.id;
+    this->id = dataBuf.id;
     while (true) {
-        Package dataBuf;
-        qint64 len = socket.readDatagram((char*)&dataBuf, sizeof(Package),&serverAddr, &port);
+        qint64 len = socket.readDatagram((char*)&dataBuf, sizeof(Package),&tempAddress, &tempPort);
         if (len == -1) {
           QThread::msleep(100);
         }else{
@@ -25,12 +42,16 @@ void Data::Receive(){
         }
         this->SendMessageMutex.lock();
         if(!this->SendMessageQueue.empty()){
-            socket.writeDatagram((char*)&this->SendMessageQueue.front(),sizeof(Package),this->serverAddress,this->serverPort);
+            dataBuf = SendMessageQueue.front();
             this->SendMessageQueue.pop();
+            this->SendMessageMutex.unlock();
+            dataBuf.id = this->id;
+            socket.writeDatagram((char*)&dataBuf,sizeof(Package),serverAddress,serverPort);
+            socket.waitForBytesWritten();
         }else{
+            this->SendMessageMutex.unlock();
             QThread::msleep(100);
         }
-        this->SendMessageMutex.unlock();
     }
 }
 void Data::JoinGroup(unsigned long long groupId){
@@ -83,9 +104,7 @@ void Data::GetMessage(Package *dataBuf){
     this->ReceiveMessageMutex.unlock();
 }
 Data::Data(){
-    this->serverAddress = QHostAddress(this->ipAddress);  // server address there
-    this->serverPort = this->port;
-    this->receive = new std::thread(&Data::Receive,this);
+    this->receive = new std::thread(&Data::Core,this);
 }
 Data::~Data(){
     this->receive->detach();

@@ -5,21 +5,30 @@
 #include <netinet/in.h>
 #include <sys/stat.h>
 #include <string.h>
-
 #include <unistd.h>
 #include <time.h>
 #include <pthread.h>
 #include "BufferQueue.h"
-#include "Utils/Hash.h"
 #include "Utils/Array.h"
-#include "Clients.h"
-#include "Groups.h"
+
+#include "Client.h"
 
 const unsigned short serverPort = 19999;
-const int threadNumber = 10;
+size_t threadNumber = 10;
 int serverFileDescriptor;
-Clients *clients;
-Groups *groups;
+
+
+size_t MaxClientNumber = 4;
+//size_t MaxClientNumber = 1024*65536;
+Client *clients;
+size_t clientsIndex = 0;
+
+
+size_t MaxGroupNumber = 4;
+//size_t MaxGroupNumber = 1024*65536;
+Tree *groups;
+bool *groupsUsing;
+size_t groupsIndex = 0;
 
 _Noreturn void *Handle(BufferQueue *queue) {
     unsigned int HandleBufSize = 64;
@@ -27,12 +36,12 @@ _Noreturn void *Handle(BufferQueue *queue) {
     while (true) {
         if (!BufferQueueIsEmpty(queue)) {
             Message messages[HandleBufSize];
-            int length = 0;
-            for (int i = 0; i < HandleBufSize && !BufferQueueIsEmpty(queue); i++) {
+            size_t length = 0;
+            for (size_t i = 0; i < HandleBufSize && !BufferQueueIsEmpty(queue); i++) {
                 messages[length++] = *Front(queue);
                 BufferQueuePop(queue);
             }
-            for (int i = 0; i < length; i++) {
+            for (size_t i = 0; i < length; i++) {
                 Message message = messages[i];
                 printf("%hhu.", *(char *) (&message.address.sin_addr.s_addr));
                 printf("%hhu.", *((char *) (&message.address.sin_addr.s_addr) + 1));
@@ -41,122 +50,107 @@ _Noreturn void *Handle(BufferQueue *queue) {
                 printf("%d\t", message.address.sin_port);
                 switch (message.data.code) {
                     case TOUCH: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client)) {
-                            client->time = time(NULL);
-                            puts("Touch ok !");
-                        } else {
-                            client = ClientNew();
-                            ClientsInsert(clients, message.address, client);
-                            message.data.code = ERROR;
-                            client->address = message.address;
-                            client->length = message.length;
-                            puts("Touch error !");
-                        }
-                        break;
-                    }
-                    case NEW_GROUP: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client) && HashSize(client->group) < 16) {
-                            Group *group = GroupNew();
-                            ((GroupPackage *) (message.data.data))->groupId = (unsigned long long) group;
-                            GroupsInsert(groups, group, group);
-                            ArrayPushBack(group->array, client);
-                            HashInsert(client->group, group, group);
-                            puts("New group ok !");
-                        } else {
-                            message.data.code = ERROR;
-                            puts("New group error !");
-                        }
-                        break;
-                    }
-                    case DELETE_GROUP: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client)) {
-                            Group *group;
-                            if (GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
-                                GroupsErase(groups, group);
-                                for (size_t ii = 0, size = group->array->size; ii < size; ii++) {
-                                    HashErase(((Client *) ArrayGet(group->array, ii))->group, group);
+                        size_t id = message.data.id;
+                        if(id < MaxClientNumber){
+                            pthread_rwlock_wrlock(&clients[id].rwlock);
+                            if(clients[id].Online){
+                                clients[id].time = time(NULL);
+                                printf("%lu Touch Online !\n",id);
+                            }else{
+                                clients[id].address = message.address;
+                                clients[id].length = message.length;
+                                clients[id].time = time(NULL);
+                                clients[id].Online = true;
+                                printf("%lu Touch Offline !\n",id);
+                            }
+                            pthread_rwlock_unlock(&clients[id].rwlock);
+                        }else{ // distribute an id
+                            size_t newId = clientsIndex;
+                            bool flag = false;
+                            for(size_t ii = clientsIndex,size = MaxClientNumber;ii<size;ii++){
+                                pthread_rwlock_rdlock(&clients[ii].rwlock);
+                                bool result = clients[ii].Online;
+                                pthread_rwlock_unlock(&clients[ii].rwlock);
+                                if(!result){
+                                    newId = ii;
+                                    flag = true;
+                                    break;
                                 }
-                                GroupDestroy(group);
-                                puts("Delete group ok !");
-                            } else {
-                                puts("Delete group error !");
-                                message.data.code = ERROR;
                             }
-                        } else {
-                            puts("Delete group error !");
-                            message.data.code = ERROR;
-                        }
-                        break;
-                    }
-                    case JOIN_GROUP: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client)) {
-                            Group *group;
-                            if (!HashGet(client->group, (void *) ((GroupPackage *) (message.data.data))->groupId,
-                                         (void **) &group) &&
-                                GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
-                                ArrayPushBack(group->array, client);
-                                HashInsert(client->group, group, group);
-                                puts("Join group ok !");
-                            } else {
-                                puts("Join group error !");
-                                message.data.code = ERROR;
-                            }
-                        } else {
-                            puts("Join group error !");
-                            message.data.code = ERROR;
-                        }
-                        break;
-                    }
-                    case DETACH_GROUP: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client)) {
-                            Group *group;
-                            if (HashGet(client->group, (void *) ((GroupPackage *) (message.data.data))->groupId,
-                                        (void **) &group)
-                                &&
-                                GroupsGet(groups, (void *) ((GroupPackage *) (message.data.data))->groupId, &group)) {
-                                ArrayDelete(group->array, client);
-                                HashErase(client->group, group);
-                                puts("Detach group ok !");
-                            } else {
-                                puts("Detach group error !");
-                                message.data.code = ERROR;
-                            }
-                        } else {
-                            puts("Detach group error !");
-                            message.data.code = ERROR;
-                        }
-                        break;
-                    }
-                    case CHAT: {
-                        Client *client;
-                        if (ClientsGet(clients, message.address, &client)) {
-                            Group *group;
-                            if (HashGet(client->group, (void *) ((ChatPackage *) message.data.data)->groupId,
-                                        (void **) &group)) {
-                                for (size_t ii = 0, size = ArraySize(group->array); ii < size; ii++) {
-                                    sendto(serverFileDescriptor, &message.data, sizeof(Package), 0,
-                                           (struct sockaddr *) &((Client *) ArrayGet(group->array, ii))->address,
-                                           ((Client *) ArrayGet(group->array, ii))->length);
+                            if(!flag){
+                                for(size_t ii=0;ii<clientsIndex;ii++){
+                                    pthread_rwlock_rdlock(&clients[ii].rwlock);
+                                    bool result = clients[ii].Online;
+                                    pthread_rwlock_unlock(&clients[ii].rwlock);
+                                    if(!result){
+                                        newId = ii;
+                                        flag = true;
+                                        break;
+                                    }
                                 }
-                                puts("Chat ok !");
-                                continue;
-                            } else {
-                                puts("Chat error !");
-                                message.data.code = ERROR;
                             }
-                        } else {
-                            puts("Chat error !");
-                            message.data.code = ERROR;
+                            if(!flag){
+                                message.data.code = ERROR;
+                                puts("Too many clients");
+                            }else{
+                                clientsIndex = message.data.id = newId;
+                                message.data.code = ID;
+                                printf("New Id : %lu\n",message.data.id);
+                            }
                         }
                         break;
                     }
-                    default: {
-                        message.data.code = UNKNOWN;
+                    case NEW_GROUP:{
+                        size_t newId = groupsIndex;
+                        bool flag = false;
+                        for(size_t ii = groupsIndex,size = MaxGroupNumber;ii<size;ii++){
+                            TreeRLock(groups[ii]);
+                            bool result = groupsUsing[ii];
+                            TreeUnLock(groups[ii]);
+                            if(!result){
+                                newId = ii;
+                                flag = true;
+                                break;
+                            }
+                        }
+                        if(!flag){
+                            for(size_t ii=0;ii<clientsIndex;ii++){
+                                TreeRLock(groups[ii]);
+                                bool result = groupsUsing[ii];
+                                TreeUnLock(groups[ii]);
+                                if(!result){
+                                    newId = ii;
+                                    flag = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if(!flag){
+                            message.data.code = ERROR;
+                            puts("Too many group ");
+                        }else{
+                            groupsIndex = ((GroupPackage*)message.data.data)->groupId = newId;
+                            message.data.code = ID;
+                            TreeWLock(groups[newId]);
+                            groupsUsing[newId] = true;
+                            TreeUnLock(groups[newId]);
+                            printf("New group Id : %lu\n",newId);
+                        }
+                        break;
+                    }
+                    case DELETE_GROUP:
+                        break;
+                    case JOIN_GROUP:
+                        break;
+                    case DETACH_GROUP:
+                        break;
+                    case ERROR:
+                        break;
+                    case CHAT:
+                        break;
+                    case UNKNOWN:
+                        break;
+                    default:{
                         break;
                     }
                 }
@@ -212,32 +206,46 @@ int main() {
         close(serverFileDescriptor);
         exit(2);
     }
-    clients = ClientsNew();
-    groups = GroupsNew();
+    clients = malloc(sizeof(Client)*MaxClientNumber);
+    for(size_t i=0;i<MaxClientNumber;i++){
+        pthread_rwlock_init(&clients[i].rwlock,NULL);
+        clients[i].Online = false;
+    }
+    groups = malloc(sizeof(Tree)*MaxGroupNumber);
+    for(size_t i=0;i<MaxGroupNumber;i++){
+        groups[i] = TreeNew();
+    }
+    groupsUsing = malloc(sizeof(bool)*MaxGroupNumber);
+    memset(groupsUsing,0,sizeof(bool)*MaxGroupNumber);
     BufferQueue *queues[threadNumber];
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         queues[i] = BufferQueueNew();
     }
     pthread_t GetThreads[threadNumber];
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         pthread_create(&GetThreads[i], NULL, (void *_Nullable (*_Nonnull)(void *_Nullable)) GetMessage, queues[i]);
     }
     pthread_t HandleThreads[threadNumber];
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         pthread_create(&HandleThreads[i], NULL, (void *_Nullable (*_Nonnull)(void *_Nullable)) Handle, queues[i]);
     }
     getchar();
     getchar();
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         pthread_detach(GetThreads[i]);
     }
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         pthread_detach(HandleThreads[i]);
     }
-
-    for (int i = 0; i < threadNumber; i++) {
+    for (size_t i = 0; i < threadNumber; i++) {
         BufferQueueDestroy(queues[i]);
     }
+    free(clients);
+    for(size_t i=0;i<MaxGroupNumber;i++){
+        TreeDestroy(groups[i]);
+    }
+    free(groups);
+    free(groupsUsing);
     return 0;
 }
 

@@ -1,9 +1,6 @@
 file(REMOVE_RECURSE
   "CMakeFiles/server_plus.dir/BufferQueue.c.o"
-  "CMakeFiles/server_plus.dir/Clients.c.o"
-  "CMakeFiles/server_plus.dir/Groups.c.o"
-  "CMakeFiles/server_plus.dir/Utils/Array.c.o"
-  "CMakeFiles/server_plus.dir/Utils/Hash.c.o"
+  "CMakeFiles/server_plus.dir/Utils/Tree.c.o"
   "CMakeFiles/server_plus.dir/main.c.o"
   "server_plus"
   "server_plus.pdb"

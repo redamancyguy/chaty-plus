@@ -17,6 +17,15 @@ int main(int argc, char *argv[])
             break;
         }
     }
+
+//    QHostAddress serverAddr = QHostAddress("0.0.0.0");
+//    quint16 port = 19999;
+//    QUdpSocket socket;
+//    socket.bind(serverAddr, 0,QUdpSocket::ShareAddress);
+//    socket.open(QIODevice::ReadWrite);
+//    Package pkg;
+//    socket.writeDatagram((char*)&pkg,sizeof(Package),serverAddr,port);
+//    QThread::sleep(1);
     MainWindow w;
     w.show();
     return a.exec();

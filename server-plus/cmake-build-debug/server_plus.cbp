@@ -82,31 +82,19 @@
 		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/BufferQueue.h">
 			<Option target="server_plus"/>
 		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.c">
-			<Option target="server_plus"/>
-		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Clients.h">
+		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Client.h">
 			<Option target="server_plus"/>
 		</Unit>
 		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Communication.h">
 			<Option target="server_plus"/>
 		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.c">
-			<Option target="server_plus"/>
-		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Groups.h">
-			<Option target="server_plus"/>
-		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.c">
-			<Option target="server_plus"/>
-		</Unit>
 		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Array.h">
 			<Option target="server_plus"/>
 		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.c">
+		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.c">
 			<Option target="server_plus"/>
 		</Unit>
-		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Hash.h">
+		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/Utils/Tree.h">
 			<Option target="server_plus"/>
 		</Unit>
 		<Unit filename="/Users/sunwenli/Documents/GitHub/chaty-plus/server-plus/fileServer.h">
